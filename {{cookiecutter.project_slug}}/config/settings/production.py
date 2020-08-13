@@ -235,14 +235,9 @@ ANYMAIL = {}
 # ------------------------------------------------------------------------------
 # https://django-compressor.readthedocs.io/en/latest/settings/#django.conf.settings.COMPRESS_ENABLED
 COMPRESS_ENABLED = env.bool("COMPRESS_ENABLED", default=True)
+{%- if cookiecutter.use_whitenoise == 'n' %}
 # https://django-compressor.readthedocs.io/en/latest/settings/#django.conf.settings.COMPRESS_STORAGE
-{%- if cookiecutter.cloud_provider == 'AWS' and cookiecutter.use_whitenoise == 'y' %}
-COMPRESS_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
-{%- elif cookiecutter.cloud_provider == 'GCP' and cookiecutter.use_whitenoise == 'y' %}
-COMPRESS_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
-{%- elif cookiecutter.cloud_provider == 'AWS' or cookiecutter.cloud_provider == 'GCP' %}
 COMPRESS_STORAGE = STATICFILES_STORAGE
-COMPRESS_ROOT = STATIC_ROOT  # noqa F405 
 {%- elif cookiecutter.cloud_provider == 'None' %}
 COMPRESS_STORAGE = "compressor.storage.GzipCompressorFileStorage"
 {%- endif %}
